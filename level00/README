@@ -1,0 +1,3 @@
+The program use scanf to read a password number 
+
+system("/bin/sh") will be run if the input password is 5276 
