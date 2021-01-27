@@ -1,0 +1,18 @@
+The program use scanf to read a password
+
+Here it's a crypto challenge but with only 15 case we can do a easy bruteforce
+
+the password is substract from a constant 322424845
+
+and then after some condition, it's use as a mask for a decryption algorithm
+
+after the switch case we see that the mask can be either
+1, 2, 3, 4, 5, 6, 7, 8, 9, 16, 17, 18, 19, 20 or 21
+
+we just need to test them
+we send 322424845 minus the value we want
+
+level03@OverRide:~$> (python -c 'print 322424845 - 18'; cat) | ./level03
+
+level04@OverRide:~$> cat ~level04/.pass
+kgv3tkEb9h2mLkRsPkXRfc2mHbjMxQzvb2FrgKkf
