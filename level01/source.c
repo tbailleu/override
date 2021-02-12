@@ -5,6 +5,7 @@ char g_a_user_name[256];
 
 int	verify_user_name(void)
 {
+	puts("verifying username....\n");
 	return (strncmp(g_a_user_name, "dat_wil", 7));
 }
 
@@ -31,13 +32,13 @@ int	main(void)
 		if ((status == 0) || (status != 0))
 		{
 			puts("nope, incorrect password...\n");
-			status = 1;
+			return (1);
 		}
 	}
 	else
 	{
 		puts("nope, incorrect username...\n");
-		status = 1;
+		return (1);
 	}
-	return (status);
+	return (0);
 }
