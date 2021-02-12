@@ -1,0 +1,13 @@
+The program use scanf to read a password number
+
+system("/bin/sh") will be run if the input password pass the auth() checker
+
+the auth() function use ptrace(PT_TRACE_ME, ...) to detect the usage of gdb
+
+here we can patch the asm instruction to bypass the ptrace() call
+to analyse the auth() checker more easily with gdb
+
+level06@OverRide:~$> (echo "hacker" ; echo "6232814" ; cat) | ./level06
+
+level07@OverRide:~$> cat ~level07/.pass
+GbcPDRgsFK77LNnnuh7QyFYA2942Gp8yKj9KrWD8
