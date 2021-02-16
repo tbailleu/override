@@ -84,11 +84,11 @@ int main(int argc, char **argv, char **envp)
 		error = 1;
 		fgets(user_input, 20, stdin);
 		user_input[strlen(user_input) - 1] = '\0';
-		if (memcmp(user_input,  "store",  5) == 0)
+		if (memcmp(user_input, "store", 5) == 0)
 			error = store_number(database);
-		else if (memcmp(user_input,  "read",  4) == 0)
+		else if (memcmp(user_input, "read", 4) == 0)
 			error = read_number(database);
-		else if (memcmp(user_input,  "quit",  4) == 0)
+		else if (memcmp(user_input, "quit", 4) == 0)
 			return (0);
 		if (error == 0)
 			printf(" Completed %s command successfully\n", user_input);

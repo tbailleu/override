@@ -11,13 +11,13 @@ int auth(char *buffer, int password)
 	buffer[strcspn(buffer, "\n")] = '\0';
 	len = strnlen(buffer, 32);
 	if (len < 6) return (1);
-    if (ptrace(PT_TRACE_ME, 0, 1, 0) == -1)
+	if (ptrace(PT_TRACE_ME, 0, 1, 0) == -1)
 	{
 		puts("\x1b[32m.---------------------------.");
 		puts("\x1b[31m| !! TAMPERING DETECTED !!  |");
 		puts("\x1b[32m\'---------------------------\'");
 		return (1);
-    }
+	}
 	value = ((int)buffer[3] ^ 0x1337U) + 0x5eeded;
 	i = -1;
 	while (++i < len)

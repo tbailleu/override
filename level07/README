@@ -13,7 +13,7 @@ but since it's a multiple of 3 we will use integer overflow to bypass the check
       1  0000 0000  0000 0000  0000 0000  0000 0000 (2**32)
 +                                      1  1100 1000 (114*4)
 =     1  0000 0000  0000 0000  0000 0001  1100 1000
->> 4 =    100 0000  0000 0000  0000 0000  0111 0010 (1073741938)
+/ 4 =     100 0000  0000 0000  0000 0000  0111 0010 (1073741938)
 
 the address of the system() function [0xf7e6aed0] => 4159090384 in decimal
 the address of the "/bin/sh" string [0xf7f897ec] => 4160264172 in decimal
